@@ -1,0 +1,47 @@
+##############################################################################
+#    Filename   :  PreConfiguration.txt
+#
+#    Description:  PreConfiguration Test Cases.
+#
+#    Version    :  1.0
+#    Created    :  10/04/2018
+#    Compiler   :  python
+#    Author     :
+#    Company    :
+#    Revision History:
+#
+################################################################################
+*** Settings ***
+
+Library  Selenium2Library    60
+Variables    ../TestData/Testdata_web.py
+
+Resource    ../ConfigurationBase/ConfigurationSetup.txt
+Resource    ../ResourceFiles/ResourceFile_prism.txt
+Resource    ../ResourceFiles/ResourceFile_sid.txt
+Resource    ../ResourceFiles/HelperMethods.txt
+
+
+Suite Setup   Suite Readiness
+Suite Teardown  Suite Tear Down Web
+Test Setup    Test Setup PreConfiguration
+Test Teardown    Suite Tear Down Web
+
+*** Variables ***
+
+*** Comment ***
+
+*** Test Cases ***
+
+########################################################################################
+# Test Cases ID :- C001   SID: Create a New Company for Automation
+# Steps : 1) Login to SID.
+#         2) Create a New Company.
+#Precondition:
+########################################################################################
+Test case C001: SID: Create a New Company for Automation
+    [Documentation]	SID: Create a New Company for Automation
+    [Tags]	C001
+    [Teardown]    Test Teardown    ${TEST STATUS}    001
+    Login to SID
+    Add New Company
