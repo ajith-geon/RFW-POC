@@ -1,0 +1,59 @@
+#############################################################################################
+#    Filename   :  ResourceFile_stargate.txt
+#    Description:  This file contains keywords defined for Stargate APIs
+#
+#    Version    :  1.0
+#    Created    :  03/10/2018
+#    Compiler   :  python
+#    Author     :
+#    Company    :
+#    Revision History:
+#############################################################################################
+
+*** Settings ***
+
+Library         Selenium2Library    60
+Library     	Collections
+Library	        RequestsLibrary
+Library         OperatingSystem
+Library         String
+
+
+
+Variables    ../TestData/Testdata_web.py
+
+***Keywords***
+
+###################################################################
+# KeyWord Name : GET
+# Document     : Keyword for GET from the Stargate API Gateway
+###################################################################
+GET
+    [Arguments]    ${Endpoint}    ${Expected_Status_Code}
+    Create Session	    stargate	    ${Stargate_base_url}
+    ${resp}=	Get Request	        stargate      	/${Endpoint}
+    Should Be Equal As Strings	    ${resp.status_code} 	${Expected_Status_Code}
+    [Return]    ${resp}
+
+###################################################################
+# KeyWord Name : GET CONTENT
+# Document     : Keyword for GET from the Stargate API Gateway
+###################################################################
+GET CONTENT
+    [Arguments]    ${Endpoint}    ${Expected_Status_Code}    ${Json_Path}
+    ${response}=   GET    ${Endpoint}    ${Expected_Status_Code}
+    ${value}=  Get Value From Json     ${response.json()}    ${Json_Path}
+    ${content}=   Convert To String  ${value}
+    ${sub}=   get substring    ${content}   3    -2
+    [Return]   ${sub}
+
+###################################################################
+# KeyWord Name : PUT
+# Document     : Keyword for GET from the Stargate API Gateway
+###################################################################
+PUT
+    [Arguments]    ${Endpoint}    ${Expected_Status_Code}    ${Data}=${EMPTY}
+    Create Session	    stargate	    ${Stargate_base_url}
+    ${resp}=	Put Request	        stargate      	/${Endpoint}     data=${Data}    
+	Should Be Equal As Strings	    ${resp.status_code} 	${Expected_Status_Code}
+    [Return]    ${resp}

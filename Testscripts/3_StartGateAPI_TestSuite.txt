@@ -1,0 +1,59 @@
+##############################################################################
+#    Filename   :  StarGateAPI_Test.txt
+#
+#    Description:  Suite Contains the Stargate APIs to be validated.
+#
+#    Version    :  1.0
+#    Created    :  25/9/2018
+#    Compiler   :  python
+#    Author     :
+#    Company    :
+#
+#    Revision History:
+#
+################################################################################
+*** Settings ***
+
+Library         Selenium2Library    60
+Library     	Collections
+Library	        RequestsLibrary
+Library         OperatingSystem
+Library         String
+Library         JSONLibrary
+
+
+Resource    ../ResourceFiles/ResourceFile_stargate.txt
+
+*** Variables ***
+
+*** Comment ***
+
+*** Test Cases ***
+
+########################################################################################
+# Test Cases ID :- C001   Test GET Requests Response Code
+# [Documentation]  To Test the Response of various GET Requests
+########################################################################################
+Test Case: 01- GET Request Response Code
+    GET    CarrierSchema    200
+    GET    CarrierSchema/TMO Porthos2    404
+
+########################################################################################
+# Test Cases ID :- C002   Test GET Requests with Expected Response Content
+# [Documentation]  To Test the Response Content for various GET Requests
+########################################################################################
+Test Case: 02- GET Request Response Content
+    ${Response_Content}=   GET CONTENT     CarrierSchema/TMO Porthos/Activation/v1    200     schema.description
+    Should Be Equal      ${Response_Content}      TMO Prothos Activation Payload
+
+########################################################################################
+# Test Cases ID :- C003   Test PUT Requests Response Code
+# [Documentation]  To Test the Response of various PUT Requests
+########################################################################################
+Test Case: 03- PUT Request Response Code
+    PUT    CarrierSchema/T-mobile adapter test/Activation/v1     400
+	
+
+
+
+

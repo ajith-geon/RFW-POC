@@ -1,0 +1,117 @@
+##############################################################################
+#    Filename   :  ResourceFile_prism.txt
+#    Description:  This file contains all the user defined keywords created for PRiSM
+#
+#    Version    :  1.0
+#    Created    :  10/04/2018
+#    Compiler   :  python
+#    Author     :
+#    Company    :
+#
+#    Revision History:
+#
+################################################################################
+*** Settings ***
+
+Library  Selenium2Library
+#Library  AngularJSLibrary
+Library    OperatingSystem
+Library    Collections
+
+Variables    ../ObjectRepository/ElementLocators_prism.py
+Variables    ../ObjectRepository/ElementLocators_sid.py
+Variables    ../TestData/Testdata_web.py
+
+Resource    HelperMethods.txt
+
+***Keywords***
+##########################################################################
+# KeyWord Name : Login PRiSM
+# Document     : Keyword to verify login with provided user name and password and check the logged in page.
+###########################################################################
+Login PRiSM
+     Wait Until Page Contains   Please Login    timeout=60s
+     Input Text    ${Username_Xpath}    ${Username}
+     Input Text    ${Password_Xpath}    ${Password}
+     click button    ${Login_Button}
+     ${EULA_Status}=  Run Keyword And Return Status    Page Should Contain Element     ${Eula_Accept_Button}    timeout=20s
+     Run Keyword If    ${EULA_Status}     click element     ${Eula_Accept_Button}
+     Wait Until Page Contains    ${Login_Confirm_Message}      timeout=30s
+
+###################################################################
+# KeyWord Name : Accept Glass Invite
+# Document     : Navigate to the Glass Invite Page through invite.
+###################################################################
+Accept Glass Invite
+     Wait Until Element Is Visible    ${Glass_Invitation}
+     click element   ${Glass_Invitation}
+     Wait Until Page Contains   New Dashboard Preview   timeout=60s
+
+###################################################################
+# KeyWord Name : Add Widget
+# Document     : Add Widget to the Dashboard
+###################################################################
+Add Widget
+    [Arguments]    ${Widget_Name}
+    Wait Until Element Is Visible    ${Add_Widget_PlaceHolder}      timeout=30s
+    sleep   3s
+    click element   ${Add_Widget_PlaceHolder}
+    Wait Until Page Contains      Add a Widget      timeout=30s
+    sleep   4s
+    Wait Until Element Is Visible    //div[.//text() = '${Widget_Name}']      timeout=30s
+    click element    //div[@class="mat-button-toggle-label-content"][contains(text(), '${Widget_Name}')]
+    sleep   4s
+    click button    ${Add_Widget_Button}
+    sleep   3s
+    Wait Until Page Contains    ${Widget_Name}    timeout=30s
+
+###################################################################
+# KeyWord Name : Remove Widget
+# Document     : Remove Widget from Dashboard [User will have to give the widget name in lowercase hyphen separated]
+###################################################################
+Remove Widget
+    [Arguments]    ${Widget_Name}
+    Wait Until Element Is Visible   //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/i      timeout=30s
+    click element       //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/i
+
+###################################################################
+# KeyWord Name : Modify Rating
+# Document     : Modify Widget Rating from Dashboard [User will have to give the widget name in lowercase hyphen separated]
+###################################################################
+Modify Rating
+    [Arguments]    ${Widget_Name}   ${User_Rating}
+    Wait Until Element Is Visible    //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[1]/i[2]       timeout=30s
+    click element    //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[1]/i[2]
+    Wait Until Element Is Visible    //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[2]/div/i[${User_Rating}]         timeout=30s
+    click element    //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[2]/div/i[${User_Rating}]
+    Mouse Out   //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[1]/i[2]
+    sleep   3s
+
+###################################################################
+# KeyWord Name : Toggle Default
+# Document     : Toggle Default Dashboard Page from Glass Dashboard Page
+###################################################################
+Toggle Default
+    Wait Until Element Is Visible    ${Default_Toggle_Button}    timeout=30s
+    click element    ${Default_Toggle_Button}
+
+###################################################################
+# KeyWord Name : Return to Old Dashboard
+# Document     : Return to Old Dashboard
+###################################################################
+Return to Old Dashboard
+    Wait Until Element Is Visible    ${ReturnToOld_Button}       timeout=30s
+    click element   ${ReturnToOld_Button}
+
+###################################################################
+# KeyWord Name : Rate Widget
+# Document     : Rate Widget
+###################################################################
+Rate Widget
+    [Arguments]    ${Widget_Name}   ${User_Rating}
+    Wait Until Element Is Visible    //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[1]/i       timeout=30s
+    click element    //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[1]/i
+    Wait Until Element Is Visible    //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[2]/div/i[${User_Rating}]         timeout=30s
+    click element    //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[2]/div/i[${User_Rating}]
+    Mouse Out   //glass-${Widget_Name}[@class="ng-star-inserted"]/mat-card/mat-card-content/header/h4/span[2]/glass-widget-feedback/div/span[1]/i[2]
+    sleep   3s

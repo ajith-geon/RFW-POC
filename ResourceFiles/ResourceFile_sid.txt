@@ -1,0 +1,60 @@
+#############################################################################################
+#    Filename   :  ResourceFile_sid.txt
+#    Description:  This file contains all the user defined keywords created for SID
+#
+#    Version    :  1.0
+#    Created    :  10/04/2018
+#    Compiler   :  python
+#    Author     :
+#    Company    :
+#    Revision History:
+#############################################################################################
+
+*** Settings ***
+
+Library  Selenium2Library
+#Library  AngularJSLibrary
+Library    OperatingSystem
+Library    Collections
+
+Library     ../Libraries/Environment.py
+Variables    ../ObjectRepository/ElementLocators_sid.py
+Variables    ../TestData/Testdata_web.py
+
+Resource    HelperMethods.txt
+
+***Keywords***
+
+###################################################################
+# KeyWord Name : Login to SID
+# Document     : Login to SID
+###################################################################
+Login to SID
+     Wait Until Element Is Visible   ${SID_Username_Xpath}      timeout=30s
+     Input Text    ${SID_Username_Xpath}    ${SID_User}
+     Input Text    ${SID_Password_Xpath}    ${SID_User}
+     click element    ${SID_Login_Button}
+     Wait Until Page Contains    ${SID_Login_Confirm_Message}      timeout=30s
+
+###################################################################
+# KeyWord Name : Add New Company
+# Document     : Add New Company
+###################################################################
+Add New Company
+    ${Company_Name}=  COMPANY_OVERRIDE
+    Set Global Variable    ${Company_Name}
+    Go to    ${SID_Add_New_Company_url}
+    Wait Until Page Contains    Add New Company      timeout=30s
+    Input Text    ${Company_Name_Xpath}    ${Company_Name}
+    Input Text    ${Contract_Country}     Canada
+    Input Text    ${FirstName}      ${Company_Name}
+    Input Text    ${LastName}      ${Company_Name}
+    Input Text    ${LocalEmail}      testuser@testmail.com
+    Input Text    ${POC_Email}       testPOC@testmail.com
+    Input Text    ${Company_UserName}    ${Company_Name}
+    Input Text    ${CompanyPassword}    ${Company_Name}
+    Input Text    ${ConfirmPassword}    ${Company_Name}
+    click element    ${Service_Area_Data}
+    click element    ${Admin_Roles_Billing}
+    sleep    4s
+    click element    ${Add_Company_Button}

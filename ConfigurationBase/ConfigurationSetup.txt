@@ -1,0 +1,73 @@
+# ############################################################################
+#    Filename   :  ConfigurationSetup.txt
+#    Description:  Contains the Suite and Test Setups and Teardowns
+#    Version    :  1.0
+#    Created    :  10/04/2018
+#    Author     :
+#    Company    :
+################################################################################
+
+*** Settings ***
+
+Library  Selenium2Library    60
+Variables    Framework_Properties.py
+Resource    ../ResourceFiles/Testrail_Resource.txt
+
+*** Variables ***
+
+*** Keywords ***
+
+######################################################################
+# KeyWord Name : Test Setup Web
+# Usage        : keyword to be executed as Test Setup
+###################################################################
+Test Setup Web
+    Run Keyword If    '${PREV_TEST_STATUS}'=='FAIL'    Fail    Skipping test because '${PREV_TEST_NAME}' is NOT completed successfully.
+    ...         ELSE    Open New Browser    ${PRiSM_base_url}    Please Login
+    DeclareGlobalVariable
+###################################################################
+# KeyWord Name : Open New Browser
+# Usage        : Function for Opening a browser and delete all cookies
+###################################################################
+Open New Browser
+    [Arguments]    ${url}    ${validation_string}
+    Open Browser    ${url}    ${Browser_name}    60s
+    Wait Until Page Contains    ${validation_string}    timeout=30s
+    Delete All Cookies
+######################################################################
+# KeyWord Name : Close Current Browser
+# Usage        : Function for closing current browser
+###################################################################
+Close Current Browser
+    Close Browser
+######################################################################
+# KeyWord Name : Suite Readiness
+# Usage        : Keyword to be executed as suite setup
+###################################################################
+Suite Readiness
+    Run Keyword And Ignore Error    SUITE READINESS TESTRAIL
+######################################################################
+# KeyWord Name : Test Teardown
+# Usage        : keyword to be executed as tear down
+###################################################################
+Test Teardown
+    [Arguments]    ${status}    ${caseid}
+    Run Keyword If    '${PREV_TEST_STATUS}'=='FAIL'        Run Keyword And Ignore Error    TEST RESULT UPDATE    ${run_id}    ${caseid}    BLOCKED   ${TEST MESSAGE}   ${Teststepinfo}
+    ...         ELSE   Run Keyword And Ignore Error    TEST RESULT UPDATE    ${run_id}    ${caseid}    ${status}   ${TEST MESSAGE}   ${Teststepinfo}
+    Run Keyword And Ignore Error    Close Browser
+
+######################################################################
+# KeyWord Name : Suit Setup PreConfiguration
+# Usage        : keyword to be executed as Suit Setup for PreConfiguration
+######################################################################
+Suit Setup PreConfiguration
+    Run Keyword And Ignore Error    SUITE READINESS TESTRAIL
+
+######################################################################
+# KeyWord Name : Test Setup PreConfiguration
+# Usage        : keyword to be executed as Test Setup for PreConfiguration Suite
+###################################################################
+Test Setup PreConfiguration
+    Run Keyword If    '${PREV_TEST_STATUS}'=='FAIL'    Fail    Skipping test because '${PREV_TEST_NAME}' is NOT completed successfully.
+    ...         ELSE    Open New Browser    ${SID_base_url}     Forgot your password?
+    DeclareGlobalVariable

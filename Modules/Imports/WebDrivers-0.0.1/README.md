@@ -1,0 +1,1 @@
+This distribution is to deploy the required webdrivers (chrome and firefox) into the Target Machine.

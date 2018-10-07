@@ -1,0 +1,132 @@
+##############################################################################
+#    Filename   :  TestSuite-Glass [User-Defined-Name]
+#
+#    Description:  Contains Automated Test Cases For Glass Dashboard.
+#
+#    Version    :  1.0
+#    Created    :  10/04/2018
+#    Compiler   :  python
+#    Author     :
+#    Company    :
+#
+#    Revision History:
+#
+################################################################################
+*** Settings ***
+
+Library  Selenium2Library    60
+Variables    ../TestData/Testdata_web.py
+
+
+Resource    ../ConfigurationBase/ConfigurationSetup.txt
+Resource    ../ResourceFiles/ResourceFile_prism.txt
+Resource    ../ResourceFiles/ResourceFile_sid.txt
+Resource    ../ResourceFiles/HelperMethods.txt
+
+
+Suite Setup  Suite Readiness
+Suite Teardown  Suite Tear Down Web
+Test Setup    Test Setup Web
+Test Teardown    Suite Tear Down Web
+
+*** Variables ***
+
+*** Comment ***
+
+*** Test Cases ***
+
+########################################################################################
+# Test Cases ID :- C6577382   PRiSM: Functionality of Invite from Summary HomePage and Threshold Dashboard Page.
+# Steps : 1.Click on the Invite for the New Dashboard Page,Verify the Landing Page.
+#         2.Navigate to the Threshold Dashboard Page.
+#         3.Click on the Invite for the New Dashboard Page, Verify the Landing Page.
+#
+#Precondition:
+########################################################################################
+Test case C6577382: PRiSM: Functionality of Invite from Summary HomePage and Threshold Dashboard Page
+    [Documentation]	A PRiSM user can see the invite for trying out the New Dashboard in the PRiSM Home-Page and Thresholds Dashboard Page.
+    [Tags]	C6577382
+    [Teardown]    Test Teardown    ${TEST STATUS}    6577382
+    Login PRiSM
+    Accept Glass Invite
+    Go to    ${PRiSM_Threshold_Dashboard_url}
+    Accept Glass Invite
+
+########################################################################################
+# Test Cases ID :- C6577389   Glass-Add widgets to dashboard page.
+# Steps : 1.Add Usage Running Total Widget to the Glass Dashboard Page.
+#         2.Add Inventory Summary Widget to the Glass Dashboard Page.
+#         3.Add Threshold Violation Widget to the Glass Dashboard Page.
+#         4.Add Usage History Widget to the Glass Dashboard Page.
+#         5.Verify that the Glass Dashboard page has the widgets Usage Running Total, Inventory Summary,Threshold Violations and Usage History are present in the dashboard page.
+#
+#Precondition:
+########################################################################################
+Test case C6577389: Glass-Add widgets to dashboard page
+    [Documentation]	Glass-Add widgets to dashboard page.
+    [Tags]	C6577389
+    [Teardown]    Test Teardown    ${TEST STATUS}    6577389
+    Login PRiSM
+    Accept Glass Invite
+    Add Widget      Usage Running Total
+    Add Widget      Inventory Summary
+    Add Widget      Threshold Violation
+    Add Widget      Usage History
+
+########################################################################################
+# Test Cases ID :- C6549240   Glass: Rate the Widgets in the Dashboard
+# Steps : 1.Rate the Inventory Summary Widget with 1-Star.
+#         2.Rate the Usage Running Total Widget with 2-Stars.
+#         3.Rate the Threshold Violations Widget with 3-Stars.
+#         4.Rate the Usage History Widget with 4-Stars.
+#
+#Precondition:
+########################################################################################
+Test case C6549240: Glass: Rate the Widgets in the Dashboard
+    [Documentation]	Glass: Rate the Widgets in the Dashboard.
+    [Tags]	C6549240
+    [Teardown]    Test Teardown    ${TEST STATUS}    6549240
+    Login PRiSM
+    Accept Glass Invite
+    Rate Widget    inventory-summary   1
+    Rate Widget    usage-running-total   2
+    Rate Widget    threshold-violation   3
+    Rate Widget    usage-history   4
+
+########################################################################################
+# Test Cases ID :- C6743810   Glass: Modify Rating of Widgets
+# Steps : 1.Re -Rate the Inventory Summary Widget with 10-Star.
+#         2.Re- Rate the Usage Running Total Widget with 9-Stars.
+#         3.Re- Rate the Threshold Violations Widget with 8-Stars.
+#         4.Re- Rate the Usage History Widget with 7-Stars.
+#
+#Precondition:
+########################################################################################
+Test case C6743810: Glass: Modify Rating of Widgets
+    [Documentation]	Glass: Modify Rating of Widgets.
+    [Tags]	C6743810
+    [Teardown]    Test Teardown    ${TEST STATUS}    6743810
+    Login PRiSM
+    Accept Glass Invite
+    Modify Rating    usage-history    7
+    Modify Rating    threshold-violation    8
+    Modify Rating    usage-running-total    9
+    Modify Rating    inventory-summary   10
+
+########################################################################################
+# Test Cases ID :- C6577388   Glass-Remove widget from dashboard page.
+# Steps : 1.Remove the Widget Usage History from the Dashboard.
+#         2.Verify that the dashboard doesn't have the Usage History Widget active in the Page.
+#
+#Precondition:
+########################################################################################
+Test case C6577388: Glass-Remove widget from dashboard page.
+    [Documentation]	Glass-Remove widget from dashboard page.
+    [Tags]	C6577388
+    [Teardown]    Test Teardown    ${TEST STATUS}    6577388
+    Login PRiSM
+    Accept Glass Invite
+    Remove Widget   usage-history
+    Wait Until Page Does Not Contain    Usage History     timeout=30s
+
+

@@ -1,0 +1,69 @@
+##############################################################################
+#    Filename   :  TestRail_Resource.txt
+#    Description:  This file contains keywords for Testrail Management
+#    Version    :  1.0
+#    Created    :  10/04/2018
+#    Compiler   :  python
+#    Author     :
+#    Company    :
+#    Revision History:
+################################################################################
+*** Settings ***
+
+Library    ../Libraries/testraillib.py
+
+*** Variables  ***
+
+***Keywords***
+
+###################################################################
+# KeyWord Name : SUITE READINESS TESTRAIL
+# Usage        : For Testrail credentials
+#
+###################################################################
+SUITE READINESS TESTRAIL
+     ${project_id} =    get_projectid    ${ProjectName}    ${TestRailUrl}    ${TestRailUser}    ${TestRailPassword}
+	 ${plan_id} =    get_planid    ${PlanName}    ${project_id}    ${TestRailUrl}    ${TestRailUser}    ${TestRailPassword}
+	 ${run_id} =    get_runid    ${plan_id}    ${TestRailUrl}    ${TestRailUser}    ${TestRailPassword}
+	 Set Global Variable      ${run_id}
+	 Set Suite Variable       ${SuccessMessage}    "TEST RESULTS"
+	 Set Suite Variable       ${ExecutionMessage}    "TEST RESULTS"
+
+###################################################################
+# KeyWord Name : TEST RESULT UPDATE
+# Usage        : Updating Test Result in Testrail
+###################################################################
+TEST RESULT UPDATE
+    [Arguments]    ${runid}    ${caseid}    ${status}    ${comment1}    ${comment2}
+    Log    ${status}
+    ${comment} =   Catenate    ${comment1}    ${\n}    ${comment2}
+    Log    ${comment}
+    #${autoid} =    Get From Dictionary    ${Caseidlist}    ${caseid}
+	update_result    ${runid}    ${caseid}    ${status}    ${comment}    ${TestRailUrl}    ${TestRailUser}    ${TestRailPassword}
+
+###################################################################
+# KeyWord Name : LOG STEP RESULTS
+# Usage        : For Test Result printing
+#
+###################################################################
+LOG STEP RESULTS
+	[Arguments]    ${Teststepdetails}
+	${Teststepinfo} =    Catenate    ${Teststepinfo}    ${\n}    ${Teststepdetails}
+	Set Global Variable    ${Teststepinfo}
+
+###################################################################
+# KeyWord Name : Get CaseID
+# Usage        : Get the list of caseids corresponding to automation ids
+###################################################################
+Get CaseID
+	[Arguments]    ${runid}
+	${Caseidlist} =    get_automationids    ${runid}    ${TestRailUrl}    ${TestRailUser}    ${TestRailPassword}
+	Set Global Variable    ${Caseidlist}
+
+###################################################################
+# KeyWord Name : DeclareGlobalVariable
+# Usage        : For Global variable declaration
+###################################################################
+DeclareGlobalVariable
+    ${Teststepinfo} =    Set Variable    ${EMPTY}
+	Set Global Variable    ${Teststepinfo}

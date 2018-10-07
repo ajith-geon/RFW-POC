@@ -1,0 +1,77 @@
+##############################################################################
+#    Filename   :  HelperMethods.txt
+#
+#    Description:  This txt file contains all the user defined Generic keywords as part 
+#               :   of Robot Frame work for Automation Testing.
+#
+#    Version    :  1.0
+#    Created    :  10/04/2018
+#    Compiler   :  python
+#    Author     :
+#    Company    :
+#    Revision History:
+#
+################################################################################
+*** Settings ***
+
+***Variables***
+${timeout}    60s
+***Keywords***
+
+###################################################################
+# KeyWord Name : Suite Tear Down Web
+# Usage        : Suite Tear Down Web
+###################################################################
+Suite Tear Down Web
+    Run Keyword And Ignore Error    Delete All Cookies
+    Run Keyword And Ignore Error    Close Browser
+###################################################################
+# KeyWord Name : Click By Id
+# Usage        : Click By Id   Id    timeout
+###################################################################
+Click By Id
+    [Arguments]    ${id}    ${timeout}
+    Wait Until Page Contains Element    //*[@id=${id}]    timeout = ${timeout}
+    Click Element    //*[@id=${id}]
+###################################################################
+# KeyWord Name : Click By Xpath
+# Usage        : Click By Type   Type    timeout
+###################################################################
+Click By Xpath
+    [Arguments]    ${xpath}    ${timeout}
+    Wait Until Page Contains Element    ${xpath}     timeout=${timeout}
+    Click Element    ${xpath}
+###################################################################
+# KeyWord Name : Click By Type
+# Usage        : Click By Type   Type    timeout
+###################################################################
+Click By Type
+    [Arguments]    ${type}    ${timeout}
+    Wait Until Page Contains Element    //*[@type=${type}]    timeout = ${timeout}
+    Click Element    //*[@type=${type}]
+###################################################################
+# KeyWord Name : Click By Name
+# Usage        : Click By Name   Name    timeout
+###################################################################
+Click By Name
+    [Arguments]    ${name}    ${timeout}
+    Wait Until Page Contains Element    //*[@name=${name}]    timeout = ${timeout}
+    Click Element    //*[@name=${name}]
+###################################################################
+# KeyWord Name : Select From Drop Down List By Value
+# Usage        : Select an option from drop sown list
+###################################################################
+Select From Drop Down List By Value
+    [Arguments]    ${listid}    ${value}
+    Wait Until Element Is Visible    id:${listid}     timeout=${timeout}
+    Sleep    2s
+    Select From List By Value   id:${listid}   ${value}
+###################################################################
+# KeyWord Name : Select From Drop Down List By Index
+# Usage        : Select an option from drop sown list
+###################################################################
+Select From Drop Down List By Index
+    [Arguments]    ${listid}    ${index}
+    Wait Until Element Is Enabled    id:${listid}     timeout=${timeout}
+    Sleep    2s
+    Select From List By Index   id:${listid}   ${index}

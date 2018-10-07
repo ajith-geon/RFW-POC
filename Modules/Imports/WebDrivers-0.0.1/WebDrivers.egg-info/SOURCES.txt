@@ -1,0 +1,7 @@
+README.md
+setup.cfg
+setup.py
+WebDrivers.egg-info/PKG-INFO
+WebDrivers.egg-info/SOURCES.txt
+WebDrivers.egg-info/dependency_links.txt
+WebDrivers.egg-info/top_level.txt
