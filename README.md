@@ -5,7 +5,7 @@ Welcome to the RFW-POC wiki!
 <br>**Note:** Upon Installing Python to target machine, tick the _"Add Python to PATH"_ checkbox.
 <br>![Python Path Setting Sample](https://github.com/ajith-geon/RFW-POC/blob/master/Wiki/Adding%20to%20Path%20Sample.png?raw=true)
 
-**2.** Download/Clone the code from repo- [RFW-POC](https://github.com/ajith-geon/ <br>RFW-POC)
+**2.** Download/Clone the code from repo- [RFW-POC](https://github.com/ajith-geon/RFW-POC) <br>
 ![Git Clone Sample](https://github.com/ajith-geon/RFW-POC/blob/master/Wiki/Git%20Clone%20Sample.png?raw=true)
 
 **3.** All the required python modules (including Robot Framework and Selenium Webdrivers)  are bundled inside the **Modules** folder. <br>The same can be deployed/installed to any target environment in a single click. [Internet NOT required]. <br>Double Click the _**"setup.bat"**_ file inside the /Modules folder. [This will install all the required modules into the target machine]
